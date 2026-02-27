@@ -1,0 +1,106 @@
+export const dailyPlan = [
+  '1-minute self-intro, then repeat with better clarity.',
+  'Talk 3 minutes about your morning routine without stopping.',
+  'Explain one hobby using the 6 angles framework.',
+  'Ask 5 follow-up questions in one conversation.',
+  'Record a 2-minute voice note and review filler words.',
+  'Tell a short story using Context -> Problem -> Action -> Result.',
+  'Speak on “Tea” for 3 minutes from personal and cultural angles.',
+  'Practice the +1 rule in 5 replies with a friend.',
+  'Describe your work/studies for 2 minutes with examples.',
+  'Run the Why Chain drill and answer all 5 layers aloud.',
+  'Speak about health habits for 3 minutes with structure.',
+  'Use AEQ in 5 mock conversation turns.',
+  'Do a 5-minute solo talk on a random word.',
+  'Retell a movie scene in under 90 seconds.',
+  'Practice transitions: however, because, for example, finally.',
+  'Lead a 4-minute talk on a travel memory.',
+  'Ask one deep question in 3 separate conversations.',
+  'Explain a difficult topic to a beginner in simple language.',
+  'Complete one teleprompter run with strong voice projection.',
+  'Do a no-pause 3-minute talk on food and culture.',
+  'Share a challenge you overcame using Story Mode.',
+  'Practice active listening and mirror back key phrases.',
+  'Speak about a business idea for 4 minutes.',
+  'Do a timed Q&A: answer 10 random questions out loud.',
+  'Run teleprompter at higher speed while staying clear.',
+  'Simulate a networking conversation for 5 minutes.',
+  'Talk about your future plans with confidence and detail.',
+  'Give a mini motivational talk to your future self.',
+  'Revisit Day 1 self-intro and compare improvements.',
+  'Final challenge: 7-minute fluent talk using all frameworks.',
+];
+
+export const soloTalkWords = [
+  'Mobile',
+  'Money',
+  'Rain',
+  'Business',
+  'Tea',
+  'Trust',
+  'Future',
+  'Learning',
+  'Leadership',
+  'Discipline',
+  'Courage',
+  'Friendship',
+];
+
+export const plusOnePrompts = [
+  'Hey! How was your day?',
+  'Are you joining us this weekend?',
+  'What are you working on right now?',
+  'Did you watch the match yesterday?',
+  'How is your training going?',
+  'What is one goal for this month?',
+  'Do you enjoy remote work?',
+  'How did your presentation go?',
+  'What podcast are you listening to?',
+  'Any plans for dinner tonight?',
+  'What skill are you building lately?',
+];
+
+export const aeqScenarios = [
+  'I really like cricket.',
+  'I have started waking up at 5am.',
+  'I am learning graphic design.',
+  'I want to travel more this year.',
+  'I switched to reading before bed.',
+  'I am trying to reduce social media.',
+  'I love trying new street food.',
+  'I started strength training recently.',
+  'I am building a side project.',
+  'I enjoy long solo walks in the evening.',
+  'I want to improve my public speaking.',
+];
+
+export const frameworks = [
+  {
+    title: "The 6 Angles of 'Tea' (Phase 3)",
+    points: [
+      'Definition: What tea is and where it comes from.',
+      'Personal: Your own tea habits and preferences.',
+      'Cultural: Tea traditions across regions.',
+      'Health: Benefits and trade-offs of tea consumption.',
+      'Economic: Tea as an industry and livelihood.',
+      'Emotional: Why tea feels comforting in social moments.',
+    ],
+  },
+  {
+    title: 'The 5 Universal Topics (Phase 4)',
+    points: ['Work/Studies', 'Health', 'Hobbies', 'Travel', 'Food'],
+  },
+  {
+    title: 'Real Social Script (Phase 7)',
+    points: [
+      'What do you do?',
+      'How did you get into that?',
+      'What do you enjoy most?',
+      "What's challenging?",
+    ],
+  },
+  {
+    title: 'Story Mode Framework (Phase 9)',
+    points: ['Context', 'Problem', 'Action', 'Result'],
+  },
+];
