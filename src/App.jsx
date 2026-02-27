@@ -6,6 +6,8 @@ import {
   Flame,
   Gauge,
   LayoutDashboard,
+  MessageCircle,
+  Mic,
   Play,
   Timer,
 } from 'lucide-react';
@@ -31,9 +33,8 @@ function App() {
   const [activeTab, setActiveTab] = useState('dashboard');
   const [progress, setProgress] = useState(() => {
     const saved = localStorage.getItem(STORAGE_KEY);
-    if (saved) {
-      return JSON.parse(saved);
-    }
+    if (saved) return JSON.parse(saved);
+
     return {
       currentDay: 1,
       drillsCompletedToday: 0,
@@ -81,11 +82,11 @@ function App() {
           <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
             <div>
               <h1 className="text-2xl font-bold text-slate-900">FluencyForge</h1>
-              <p className="text-sm text-slate-500">Build conversational fluency with daily cognitive drills.</p>
+              <p className="text-sm text-slate-500">Talk daily. Think clearly. Build confident spoken fluency.</p>
             </div>
             <div className="w-full sm:w-72">
               <div className="mb-1 flex justify-between text-xs text-slate-500">
-                <span>30-Day Upgrade Plan</span>
+                <span>30-Day Speaking Upgrade</span>
                 <span>Day {progress.currentDay}/30</span>
               </div>
               <div className="h-2 w-full rounded-full bg-slate-200">
@@ -115,7 +116,12 @@ function App() {
         </nav>
 
         {activeTab === 'dashboard' && (
-          <DashboardView progress={progress} dailyPlan={dailyPlan} onToggleChecklist={toggleChecklist} onBumpDay={bumpDay} />
+          <DashboardView
+            progress={progress}
+            dailyPlan={dailyPlan}
+            onToggleChecklist={toggleChecklist}
+            onBumpDay={bumpDay}
+          />
         )}
         {activeTab === 'gym' && <TrainingGym onDrillComplete={markDrillComplete} />}
         {activeTab === 'library' && <FrameworksLibrary />}
@@ -125,6 +131,8 @@ function App() {
 }
 
 function DashboardView({ progress, dailyPlan, onToggleChecklist, onBumpDay }) {
+  const todayTask = dailyPlan[progress.currentDay - 1];
+
   return (
     <div className="space-y-4">
       <div className="grid gap-4 sm:grid-cols-3">
@@ -140,12 +148,17 @@ function DashboardView({ progress, dailyPlan, onToggleChecklist, onBumpDay }) {
 
       <section className="rounded-2xl bg-white p-5 shadow-sm ring-1 ring-slate-200">
         <div className="mb-3 flex items-center justify-between">
-          <h2 className="text-lg font-semibold text-slate-900">Daily Checklist</h2>
-          <button onClick={onBumpDay} className="rounded-lg bg-accent-500 px-3 py-2 text-sm font-medium text-white hover:bg-accent-600">
+          <h2 className="text-lg font-semibold text-slate-900">Today&apos;s Spoken Mission</h2>
+          <button
+            onClick={onBumpDay}
+            className="rounded-lg bg-accent-500 px-3 py-2 text-sm font-medium text-white hover:bg-accent-600"
+          >
             Complete Day
           </button>
         </div>
-        <div className="space-y-2">
+        <p className="mb-3 rounded-xl border border-slate-200 bg-slate-50 p-3 text-sm text-slate-700">{todayTask}</p>
+        <p className="mb-2 text-xs uppercase tracking-wider text-slate-500">30-day speaking checklist</p>
+        <div className="grid gap-2 sm:grid-cols-2">
           {dailyPlan.map((task, idx) => (
             <label key={task} className="flex cursor-pointer items-start gap-3 rounded-lg border border-slate-200 p-3 hover:bg-slate-50">
               <input
@@ -154,7 +167,7 @@ function DashboardView({ progress, dailyPlan, onToggleChecklist, onBumpDay }) {
                 onChange={() => onToggleChecklist(idx)}
                 className="mt-1 h-4 w-4 rounded border-slate-300 text-accent-500 focus:ring-accent-500"
               />
-              <span className="text-sm text-slate-700">{task}</span>
+              <span className="text-sm text-slate-700">Day {idx + 1}: {task}</span>
             </label>
           ))}
         </div>
@@ -194,6 +207,7 @@ function SoloTalkDrill({ onDrillComplete }) {
 
   useEffect(() => {
     if (!running) return undefined;
+
     const timer = setInterval(() => {
       setTimeLeft((prev) => {
         if (prev <= 1) {
@@ -216,7 +230,8 @@ function SoloTalkDrill({ onDrillComplete }) {
   };
 
   return (
-    <DrillCard title='Drill A: 5-Minute Solo Talk (Phase 6)' icon={Timer}>
+    <DrillCard title="Drill A: 5-Minute Solo Talk (Phase 6)" icon={Mic}>
+      <p className="mb-3 text-sm text-slate-600">Speak continuously about the focus word. No typing, only talking.</p>
       <div className="flex flex-wrap items-center gap-3">
         <p className="rounded-xl bg-slate-100 px-3 py-2 text-xl font-semibold text-slate-900">{formatTime(timeLeft)}</p>
         <button onClick={generateWord} className="rounded-lg border border-slate-300 px-3 py-2 text-sm hover:bg-slate-50">
@@ -242,7 +257,8 @@ function PlusOneDrill({ onDrillComplete }) {
       setResult('❌ Stop giving 1-word answers! Add one extra line.');
       return;
     }
-    setResult('✅ Great +1 extension!');
+
+    setResult('✅ Great +1 extension! Now speak that response naturally out loud.');
     onDrillComplete();
   };
 
@@ -253,14 +269,15 @@ function PlusOneDrill({ onDrillComplete }) {
   };
 
   return (
-    <DrillCard title='Drill B: The +1 Rule Simulator (Phase 5)' icon={Play}>
+    <DrillCard title="Drill B: The +1 Rule Simulator (Phase 5)" icon={MessageCircle}>
+      <p className="mb-3 text-sm text-slate-600">Say your response first, then type a short transcript to self-check depth.</p>
       <div className="rounded-xl bg-slate-100 p-3 text-sm text-slate-700">Friend: {prompt}</div>
       <textarea
         value={input}
-        onChange={(e) => setInput(e.target.value)}
+        onChange={(event) => setInput(event.target.value)}
         rows={2}
         className="mt-3 w-full rounded-lg border border-slate-300 p-2 text-sm focus:border-accent-500 focus:outline-none"
-        placeholder="Type your reply..."
+        placeholder="Type your spoken response transcript..."
       />
       <div className="mt-3 flex gap-2">
         <button onClick={evaluate} className="rounded-lg bg-accent-500 px-3 py-2 text-sm text-white hover:bg-accent-600">
@@ -279,26 +296,23 @@ function WhyChainDrill({ onDrillComplete }) {
   const [answers, setAnswers] = useState(['', '', '', '', '']);
 
   const handleChange = (index, value) => {
-    setAnswers((prev) => prev.map((item, i) => (i === index ? value : item)));
+    setAnswers((prev) => prev.map((item, idx) => (idx === index ? value : item)));
   };
 
   const finish = () => {
-    if (answers.every((answer) => answer.trim().length > 0)) {
-      onDrillComplete();
-    }
+    if (answers.every((answer) => answer.trim().length > 0)) onDrillComplete();
   };
 
   return (
-    <DrillCard title="Drill C: The 'Why' Chain (Phase 6)" icon={Play}>
+    <DrillCard title="Drill C: The 'Why' Chain (Phase 6)" icon={MessageCircle}>
+      <p className="mb-3 text-sm text-slate-600">Speak every answer aloud before typing short bullets.</p>
       <div className="space-y-2">
         {[0, 1, 2, 3, 4].map((step) => (
           <div key={step} className="rounded-xl border border-slate-200 p-3">
-            <p className="mb-1 text-sm font-medium text-slate-600">
-              {step === 0 ? 'What do you like doing?' : 'Why?'}
-            </p>
+            <p className="mb-1 text-sm font-medium text-slate-600">{step === 0 ? 'What do you like doing?' : 'Why?'}</p>
             <input
               value={answers[step]}
-              onChange={(e) => handleChange(step, e.target.value)}
+              onChange={(event) => handleChange(step, event.target.value)}
               className="w-full rounded-lg border border-slate-300 p-2 text-sm focus:border-accent-500 focus:outline-none"
               placeholder={`Step ${step + 1} answer`}
             />
@@ -314,33 +328,50 @@ function WhyChainDrill({ onDrillComplete }) {
 
 function AEQDrill({ onDrillComplete }) {
   const [scenario, setScenario] = useState(aeqScenarios[0]);
-  const [ack, setAck] = useState('');
+  const [acknowledge, setAcknowledge] = useState('');
   const [expand, setExpand] = useState('');
   const [question, setQuestion] = useState('');
   const [combined, setCombined] = useState('');
 
   const submit = () => {
-    const line = `${ack.trim()} ${expand.trim()} ${question.trim()}`.trim();
+    const line = `${acknowledge.trim()} ${expand.trim()} ${question.trim()}`.trim();
     if (!line) return;
+
     setCombined(line);
     onDrillComplete();
   };
 
   const randomize = () => {
     setScenario(aeqScenarios[Math.floor(Math.random() * aeqScenarios.length)]);
-    setAck('');
+    setAcknowledge('');
     setExpand('');
     setQuestion('');
     setCombined('');
   };
 
   return (
-    <DrillCard title='Drill D: The AEQ Formula Simulator (Phase 2)' icon={Play}>
+    <DrillCard title="Drill D: The AEQ Formula Simulator (Phase 2)" icon={MessageCircle}>
+      <p className="mb-3 text-sm text-slate-600">Train spoken flow: acknowledge, add detail, ask a smart follow-up.</p>
       <p className="rounded-xl bg-slate-100 p-3 text-sm text-slate-700">Statement: {scenario}</p>
       <div className="mt-3 grid gap-2 sm:grid-cols-3">
-        <input value={ack} onChange={(e) => setAck(e.target.value)} placeholder="1. Acknowledge" className="rounded-lg border border-slate-300 p-2 text-sm" />
-        <input value={expand} onChange={(e) => setExpand(e.target.value)} placeholder="2. Expand" className="rounded-lg border border-slate-300 p-2 text-sm" />
-        <input value={question} onChange={(e) => setQuestion(e.target.value)} placeholder="3. Question" className="rounded-lg border border-slate-300 p-2 text-sm" />
+        <input
+          value={acknowledge}
+          onChange={(event) => setAcknowledge(event.target.value)}
+          placeholder="1. Acknowledge"
+          className="rounded-lg border border-slate-300 p-2 text-sm"
+        />
+        <input
+          value={expand}
+          onChange={(event) => setExpand(event.target.value)}
+          placeholder="2. Expand"
+          className="rounded-lg border border-slate-300 p-2 text-sm"
+        />
+        <input
+          value={question}
+          onChange={(event) => setQuestion(event.target.value)}
+          placeholder="3. Question"
+          className="rounded-lg border border-slate-300 p-2 text-sm"
+        />
       </div>
       <div className="mt-3 flex gap-2">
         <button onClick={submit} className="rounded-lg bg-accent-500 px-3 py-2 text-sm text-white hover:bg-accent-600">
@@ -350,53 +381,89 @@ function AEQDrill({ onDrillComplete }) {
           New Statement
         </button>
       </div>
-      {combined && <p className="mt-3 rounded-xl bg-emerald-50 p-3 text-sm text-emerald-700">{combined}</p>}
+      {combined && (
+        <p className="mt-3 rounded-xl bg-emerald-50 p-3 text-sm text-emerald-700">
+          ✅ Spoken flow line: {combined}
+        </p>
+      )}
     </DrillCard>
   );
 }
 
 function TeleprompterDrill({ onDrillComplete }) {
-  const [text, setText] = useState('Paste your script here and run the prompter...');
-  const [speed, setSpeed] = useState(40);
-  const [textSize, setTextSize] = useState(26);
+  const [text, setText] = useState(
+    'In a world where confident speakers are built, not born...\n\nToday you train your voice, your flow, and your confidence.\n\nSpeak every line with clarity and power.',
+  );
+  const [speed, setSpeed] = useState(28);
+  const [textSize, setTextSize] = useState(34);
   const [running, setRunning] = useState(false);
-  const [offset, setOffset] = useState(0);
+  const [crawlY, setCrawlY] = useState(0);
   const viewportRef = useRef(null);
   const contentRef = useRef(null);
 
   useEffect(() => {
-    if (!running) return undefined;
-    const interval = setInterval(() => {
-      setOffset((prev) => prev + speed / 80);
-    }, 50);
-    return () => clearInterval(interval);
+    if (!running || !viewportRef.current) return undefined;
+
+    setCrawlY(viewportRef.current.clientHeight + 120);
+    return undefined;
+  }, [running]);
+
+  useEffect(() => {
+    if (!running || !viewportRef.current || !contentRef.current) return undefined;
+
+    let rafId;
+    let previousTime;
+
+    const animate = (currentTime) => {
+      if (previousTime === undefined) previousTime = currentTime;
+      const delta = (currentTime - previousTime) / 1000;
+      previousTime = currentTime;
+
+      setCrawlY((prev) => prev - speed * delta);
+      rafId = window.requestAnimationFrame(animate);
+    };
+
+    rafId = window.requestAnimationFrame(animate);
+    return () => window.cancelAnimationFrame(rafId);
   }, [running, speed]);
 
   useEffect(() => {
     if (!running || !viewportRef.current || !contentRef.current) return;
-    const viewportHeight = viewportRef.current.clientHeight;
+
     const contentHeight = contentRef.current.clientHeight;
-    if (offset > contentHeight + viewportHeight) {
+    if (crawlY < -contentHeight - 80) {
       setRunning(false);
       onDrillComplete();
     }
-  }, [offset, running, onDrillComplete]);
+  }, [crawlY, running, onDrillComplete]);
 
   const run = () => {
-    setOffset(0);
+    if (!text.trim()) return;
     setRunning(true);
   };
 
+  const lines = text.split('\n').filter((line) => line.trim() !== '');
+
   if (running) {
     return (
-      <DrillCard title='Drill E: The Teleprompter (Speaking Flow Practice)' icon={Play}>
-        <div ref={viewportRef} className="relative h-72 overflow-hidden rounded-xl bg-slate-900 p-4">
+      <DrillCard title="Drill E: Star-Wars Style Teleprompter" icon={Play}>
+        <div className="rounded-xl bg-slate-950 p-3">
           <div
-            ref={contentRef}
-            style={{ transform: `translateY(calc(100% - ${offset}px))`, fontSize: `${textSize}px` }}
-            className="whitespace-pre-wrap text-center leading-relaxed text-slate-100 transition-transform"
+            ref={viewportRef}
+            className="relative h-80 overflow-hidden rounded-lg bg-[radial-gradient(circle_at_top,_#1e293b_0%,_#020617_65%)]"
+            style={{ perspective: '500px' }}
           >
-            {text}
+            <div
+              ref={contentRef}
+              className="absolute left-1/2 w-[90%] -translate-x-1/2 text-center font-semibold uppercase tracking-wide text-amber-200"
+              style={{ transform: `translateY(${crawlY}px) rotateX(24deg)`, transformOrigin: '50% 100%', fontSize: `${textSize}px` }}
+            >
+              {lines.map((line, idx) => (
+                <p key={`${line}-${idx}`} className="mb-8 leading-relaxed">
+                  {line}
+                </p>
+              ))}
+            </div>
           </div>
         </div>
         <button
@@ -410,22 +477,25 @@ function TeleprompterDrill({ onDrillComplete }) {
   }
 
   return (
-    <DrillCard title='Drill E: The Teleprompter (Speaking Flow Practice)' icon={Play}>
+    <DrillCard title="Drill E: Star-Wars Style Teleprompter" icon={Play}>
+      <p className="mb-3 text-sm text-slate-600">
+        Paste your speaking script and run it. The text floats from bottom to top in space-style crawl.
+      </p>
       <textarea
-        rows={5}
+        rows={6}
         value={text}
-        onChange={(e) => setText(e.target.value)}
+        onChange={(event) => setText(event.target.value)}
         className="w-full rounded-lg border border-slate-300 p-2 text-sm"
       />
       <div className="mt-3 grid gap-4 sm:grid-cols-2">
         <label className="text-sm text-slate-600">
-          Speed Control ({speed})
+          Speed ({speed}px/s)
           <input
             type="range"
-            min="10"
-            max="100"
+            min="12"
+            max="56"
             value={speed}
-            onChange={(e) => setSpeed(Number(e.target.value))}
+            onChange={(event) => setSpeed(Number(event.target.value))}
             className="w-full"
           />
         </label>
@@ -433,16 +503,16 @@ function TeleprompterDrill({ onDrillComplete }) {
           Text Size ({textSize}px)
           <input
             type="range"
-            min="18"
-            max="44"
+            min="20"
+            max="48"
             value={textSize}
-            onChange={(e) => setTextSize(Number(e.target.value))}
+            onChange={(event) => setTextSize(Number(event.target.value))}
             className="w-full"
           />
         </label>
       </div>
       <button onClick={run} className="mt-3 rounded-lg bg-accent-500 px-3 py-2 text-sm text-white hover:bg-accent-600">
-        Run Prompter
+        Run Crawl
       </button>
     </DrillCard>
   );
