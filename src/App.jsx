@@ -133,7 +133,7 @@ function App() {
 
         <TeleprompterDrill onDrillComplete={markRunComplete} />
         <footer className="mt-4 text-center text-xs text-violet-100/70">
-          Built by FluencyForge Dev • Portfolio: <a href="https://portfolio.example.com" target="_blank" rel="noreferrer" className="text-cyan-300 underline">portfolio.example.com</a>
+         © 2026 FluencyForge. Developed by <a href="https://shahrukh-cv.netlify.app/" target="_blank" rel="noreferrer" className="text-cyan-300 underline"> Mohd Shahrukh </a>
         </footer>
       </div>
     </div>
