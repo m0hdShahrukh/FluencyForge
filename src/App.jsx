@@ -133,7 +133,7 @@ function App() {
 
         <TeleprompterDrill onDrillComplete={markRunComplete} />
         <footer className="mt-4 text-center text-xs text-violet-100/70">
-         © 2026 FluencyForge. Developed by <a href="https://shahrukh-cv.netlify.app/" target="_blank" rel="noreferrer" className="text-cyan-300 underline"> Mohd Shahrukh </a>
+          © 2026 FluencyForge. Developed by <a href="https://shahrukh-cv.netlify.app/" target="_blank" rel="noreferrer" className="text-cyan-300 underline"> Mohd Shahrukh </a>
         </footer>
       </div>
     </div>
@@ -282,9 +282,8 @@ function TeleprompterDrill({ onDrillComplete }) {
     <div
       onClick={(event) => event.stopPropagation()}
       onTouchStart={(event) => event.stopPropagation()}
-      className={`grid gap-2 rounded-xl border p-2 sm:grid-cols-2 ${
-        floating ? 'border-slate-700 bg-slate-900/95 text-slate-100' : 'border-violet-300/30 bg-white/10 text-violet-50'
-      }`}
+      className={`grid gap-2 rounded-xl border p-2 sm:grid-cols-2 ${floating ? 'border-slate-700 bg-slate-900/95 text-slate-100' : 'border-violet-300/30 bg-white/10 text-violet-50'
+        }`}
     >
       <Slider label={`Speed ${speed}`} min={12} max={70} value={speed} onChange={setSpeed} />
       <Slider label={`Size ${textSize}`} min={16} max={62} value={textSize} onChange={setTextSize} />
@@ -321,9 +320,8 @@ function TeleprompterDrill({ onDrillComplete }) {
           <div className="rounded-xl bg-slate-950 p-1.5 sm:p-2">
             <div
               ref={viewportRef}
-              className={`relative overflow-hidden bg-[radial-gradient(circle_at_top,_#1e293b_0%,_#020617_65%)] ${
-                isFullscreen ? 'h-[100dvh] w-full rounded-none' : 'h-[52vh] min-h-[18rem] rounded-lg sm:h-[63vh]'
-              }`}
+              className={`relative overflow-hidden bg-[radial-gradient(circle_at_top,_#1e293b_0%,_#020617_65%)] ${isFullscreen ? 'h-[100dvh] w-full rounded-none' : 'h-[52vh] min-h-[18rem] rounded-lg sm:h-[63vh]'
+                }`}
               style={{ perspective: '520px' }}
             >
               <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-black/50" />
@@ -362,7 +360,8 @@ function TeleprompterDrill({ onDrillComplete }) {
                   onClick={() => setShowFsControls(false)}
                   onTouchStart={() => setShowFsControls(false)}
                 >
-                  <div className="absolute inset-x-2 top-2 space-y-2 sm:inset-x-4">
+                  <div className="absolute inset-x-2 bottom-2 space-y-2 sm:inset-x-4">
+                    <Controls floating />
                     <div className="flex justify-end">
                       <button
                         type="button"
@@ -372,7 +371,6 @@ function TeleprompterDrill({ onDrillComplete }) {
                         Hide Controls
                       </button>
                     </div>
-                    <Controls floating />
                   </div>
                 </div>
               )}
